@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
 const port = 3000;
-app.use(express.json());
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 const calculateRate = (sex, weight, height, age) => {
 	let bmr = 0;
 	if (sex == "m") {
@@ -16,13 +20,13 @@ const calculateRate = (sex, weight, height, age) => {
 app.get("/", (req, res) => {
 	res.send("Hello World!");
 });
-app.get("/bmr", (req, res) => {
+app.post("/bmr", (req, res) => {
 	const sex = req.body.sex;
 	const height = req.body.height;
 	const weight = req.body.weight;
 	const age = req.body.age;
 	const result = Math.floor(calculateRate(sex, height, weight, age));
-	console.log(calculateRate(sex, height, weight, age));
+	console.log(result);
 	res.send("" + result);
 });
 
